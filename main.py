@@ -3,12 +3,15 @@ from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
 import numpy as np
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI(
     title = 'Credit Risk Scoring API',
     description = 'Production-grade API for predicting credit default probability using XGBoost',
     version = '1.0.0'
 )
+
+Instrumentator().instrument(app).expose(app)
 
 MODEL_PATH = ('models/xgb_credit_model.pkl')
 try:
