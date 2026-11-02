@@ -60,38 +60,49 @@ Under simulated stress testing, the Horizontal Pod Autoscaler successfully scale
 NAME                  REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS
 credit-risk-api-hpa   Deployment/credit-risk-api-deployment   cpu: 124%/50%   2         5         5   <-- Scale-Out
 credit-risk-api-hpa   Deployment/credit-risk-api-deployment   cpu: 1%/50%     2         5         2   <-- Scale-In
+```
 
-🛠️ Local Environment Constraints
+### 🛠️ Local Environment Constraints
+
 For local evaluation using Docker Desktop / Minikube:
 
-imagePullPolicy: Never: Configured to utilize local Docker image builds directly without pushing to a remote container registry.
+* `imagePullPolicy: Never`: Configured to utilize local Docker image builds directly without pushing to a remote container registry.
+* `--kubelet-insecure-tls`: Applied to metrics-server to bypass local self-signed TLS certificate checks.
+* **Grafana Dashboard:** Configured for ephemeral local testing (in-memory datasource).
 
---kubelet-insecure-tls: Applied to metrics-server to bypass local self-signed TLS certificate checks.
+---
 
-Grafana Dashboard: Configured for ephemeral local testing (in-memory datasource).
+## 🚀 How to Run Locally
 
-🚀 How to Run Locally
-1. Run via Docker Compose
-Bash
+### 1. Run via Docker Compose
+
+```bash
 docker-compose up --build -d
-API Docs: http://localhost:8000/docs
+```
 
-Prometheus: http://localhost:9090
+* API Docs: http://localhost:8000/docs
+* Prometheus: http://localhost:9090
+* Grafana: http://localhost:3000
 
-Grafana: http://localhost:3000
+### 2. Deploy to Kubernetes
 
-2. Deploy to Kubernetes
-Bash
+```bash
 # Apply manifests
 kubectl apply -f k8s-deployment.yaml -f k8s-service.yaml -f k8s-hpa.yaml
 
 # Check HPA status
 kubectl get hpa credit-risk-api-hpa -w
-📬 API Endpoint Contract
-POST /predict
+```
 
-JSON
-// Request Payload
+---
+
+## 📬 API Endpoint Contract
+
+### `POST /predict`
+
+**Request Payload**
+
+```json
 {
   "RevolvingUtilizationOfUnsecuredLines": 0.5,
   "age": 45,
@@ -104,10 +115,14 @@ JSON
   "NumberOfTime60-89DaysPastDueNotWorse": 0,
   "NumberOfDependents": 1
 }
-JSON
-// Response Output
+```
+
+**Response Output**
+
+```json
 {
   "default_probability": 0.1245,
   "threshold_used": 0.35,
   "decision": "APPROVED"
 }
+```
