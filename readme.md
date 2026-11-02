@@ -40,6 +40,7 @@ Evaluated on GiveMeSomeCredit dataset (~150k records, 6.68% default rate imbalan
 ## ⚡ Kubernetes Infrastructure & HPA Benchmark
 
 The API is deployed with a minimum of 2 replicas and auto-scales up to 5 replicas based on a 50% CPU utilization threshold.
+
 ![HPA Scale Out Output](assets/Screenshot_hpa1.png)
 
 *Figure 1: HPA scale-out evidence reaching 5 replicas under 124% CPU load.*
