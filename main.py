@@ -39,7 +39,7 @@ def read_root():
 @app.post('/predict')
 def predict_credit_risk(request: CreditRequest):
     try:
-        data_dict = request.dict()
+        data_dict = request.model_dump()
         
         total_past_due = (
             data_dict['NumberOfTime30_59DaysPastDueNotWorse'] +
